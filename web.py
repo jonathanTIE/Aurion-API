@@ -47,7 +47,7 @@ def get_month_planning():
     days30 = (date.today() + timedelta(days=30)).strftime("%Y-%m-%d")
     json = aurionAPI.get_planning(token, today, days30)
     ics = aurionAPI.generate_ics(json)
-    return Response(ics, 'text/calendar', {'Content-Disposition': f'attachment; filename=planning_{today}_{days30}.ics'})
+    return Response(ics, mimetype='text/calendar', headers={'Content-Disposition': f'attachment; filename=planning_{today}_{days30}.ics'}, status=201)
 
 if __name__ == '__main__':
     app.run()
