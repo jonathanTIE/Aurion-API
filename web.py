@@ -43,8 +43,8 @@ def display_link():
 @app.route('/get_month_planning')
 def get_month_planning():
     token = request.args.get('token')
-    today = date.today().strftime("%Y-%m-%d")
-    days30 = (date.today() + timedelta(days=30)).strftime("%Y-%m-%d")
+    today = (date.today() - timedelta(days=30)).strftime("%Y-%m-%d")
+    days30 = (date.today() + timedelta(days=60)).strftime("%Y-%m-%d")
     json = aurionAPI.get_planning(token, today, days30)
     ics = aurionAPI.generate_ics(json)
     return Response(ics, mimetype='text/calendar', headers={'Content-Disposition': f'attachment; filename=planning_{today}_{days30}.ics'}, status=201)
