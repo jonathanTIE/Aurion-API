@@ -1,0 +1,4 @@
+.env
+calendar.ics
+.venv/
+__pycache__/

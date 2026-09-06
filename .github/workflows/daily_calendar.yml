@@ -1,0 +1,70 @@
+name: Aurion Calendar Gen
+
+on:
+  schedule:
+    # 5:00 PM UTC every day
+    - cron: '0 17 * * *'
+  workflow_dispatch: # Allows manual run via GitHub UI
+
+# Permissions required to publish to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}calendar.ics
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Apply Random Delay (0-10 Minutes)
+        # Skip delay if triggered manually via workflow_dispatch
+        if: github.event_name == 'schedule'
+        run: |
+          DELAY=$((RANDOM % 600))
+          echo "Sleeping for $DELAY seconds"
+          sleep $DELAY
+
+      - name: Put current date into a variable
+        run: |
+          $NOW=& Get-Date -format yyyy-MM-dd
+          echo "NOW=$NOW" >> $env:GITHUB_ENV
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Execute Fetch Calendar Script
+        env:
+          REMOTE_USERNAME: ${{ secrets.REMOTE_USERNAME }}
+          REMOTE_PASSWORD: ${{ secrets.REMOTE_PASSWORD }}
+          REMOTE_TOKEN: ${{ secrets.REMOTE_TOKEN }}
+        run: |
+          python githubAction.py
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist' # Only uploads files inside the dist directory
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

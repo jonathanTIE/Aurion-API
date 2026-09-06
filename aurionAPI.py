@@ -37,7 +37,7 @@ def get_token(username, password): #return JASON MOMOA
   headers["Host"] = "aurion-prod.enac.fr"
   #headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0"
   headers["Accept"] = "application/json, text/plain, */*"
-  headers["Accept-Language"] = "en"
+  headers["Accept-Language"] = "fr"
   headers["Accept-Encoding"] = "gzip, deflate, br"
   headers["Content-Type"] = "application/json"
   headers["Content-Length"] = "42"
