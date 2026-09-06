@@ -1,11 +1,11 @@
 import os
 from dotenv import load_dotenv
 import aurionAPI
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 import calendar
 
 def make_token():
-    load_dotenv()
+    # load_dotenv()
     username = os.getenv("REMOTE_USERNAME")
     password = os.getenv("REMOTE_PASSWORD")
 
@@ -13,7 +13,10 @@ def make_token():
         raise ValueError("Missing remote credentials in environment variables.")
 
     token = aurionAPI.get_token(username, password)
-    print(f"TOKEN={token}")  #So that github actions can store it
+    github_output = os.getenv("GITHUB_OUTPUT")
+    if github_output:
+        with open(github_output, "a") as f:
+            f.write(f"REMOTE_TOKEN={token}\n")
     return token 
 
 def get_next_date(now: str):
@@ -26,7 +29,7 @@ def get_next_date(now: str):
 
 if __name__ == "__main__":
     token = os.getenv("REMOTE_TOKEN", "")
-    now = os.getenv("NOW", "")
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     if now == "":
         raise ValueError("current date NOW is empty")
     end = get_next_date(now)
