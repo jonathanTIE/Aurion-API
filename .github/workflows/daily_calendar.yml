@@ -44,6 +44,9 @@ jobs:
         run: |
           pip install -r requirements.txt
 
+      - name: Create dist directory
+        run: mkdir -p dist
+
       - name: Execute Fetch Calendar Script
         env:
           REMOTE_USERNAME: ${{ secrets.REMOTE_USERNAME }}

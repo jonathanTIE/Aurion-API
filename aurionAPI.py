@@ -12,7 +12,7 @@ def get_planning(token, date_debut="2021-03-06", date_fin="2022-05-06"):
   headers["Host"] = "aurion-prod.enac.fr"
   #headers["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:94.0) Gecko/20100101 Firefox/94.0"
   headers["Accept"] = "application/json, text/plain, */*"
-  headers["Accept-Language"] = "en"
+  headers["Accept-Language"] = "fr-FR,fr;q=0.9"
   headers["Accept-Encoding"] = "gzip, deflate, br"
   headers["Authorization"] = "Bearer "+ token
   headers["Content-Type"] = "application/json"
