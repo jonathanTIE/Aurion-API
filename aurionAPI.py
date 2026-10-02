@@ -2,6 +2,7 @@ import requests
 from requests.structures import CaseInsensitiveDict
 import json
 
+import arrow
 from ics import Calendar, Event
 
 #retrieve planning
@@ -64,8 +65,8 @@ def generate_ics(json):
     if cours['id'] != None:
       formatedCours = Event()
       formatedCours.name = cours['favori']['f3'] + " _ " + cours['favori']['f2']
-      formatedCours.begin = cours['date_debut'] #TODO check
-      formatedCours.end = cours['date_fin'] #TODO check
+      formatedCours.begin = arrow.get(cours['date_debut']).replace(tzinfo='Europe/Paris')
+      formatedCours.end = arrow.get(cours['date_fin']).replace(tzinfo='Europe/Paris')
       formatedCours.uid = str(cours['id']) #TODO check
       formatedCours.description = f"""
          - Matière - Cours :   {cours['favori']['f3']}
