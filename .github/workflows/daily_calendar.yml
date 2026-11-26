@@ -8,6 +8,7 @@ on:
 
 # Permissions required to publish to GitHub Pages
 permissions:
+  actions: read
   contents: read
   pages: write
   id-token: write
